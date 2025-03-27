@@ -21,7 +21,7 @@ public class RemoveCommand {
             return;
         }
 
-        ShopsharePlayer player = new ShopsharePlayer(sender.getName(), sender.getUniqueId().toString());
+        ShopsharePlayer player = new ShopsharePlayer(sender.getName(), sender.getUniqueId().toString(), sender.getLocation());
         if (player.getFile() == null) {
             sender.sendMessage(miniMessage.deserialize("<red>That player is not trusted!</red>"));
             return;
@@ -32,8 +32,7 @@ public class RemoveCommand {
         String uuid = "";
         File data = player.getFile();
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
-
-        List<String> trusted = (List<String>) playerData.getList("Trusted.list", null);
+        List<String> trusted = player.getLocalTrustList();
 
         if (target == null) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(argument);
@@ -51,7 +50,7 @@ public class RemoveCommand {
 
         if (trusted.contains(uuid)) {
             trusted.remove(uuid);
-            playerData.set("Trusted.list", trusted);
+            playerData.set(player.getClaimAtLocation().getID().toString()+".list", trusted);
         }
         else {
             sender.sendMessage(miniMessage.deserialize("<red>That player is not trusted!</red>"));

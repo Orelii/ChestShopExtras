@@ -1,6 +1,12 @@
 package com.github.orelii.shopshare.Commands;
 
+import com.Acrobot.ChestShop.Plugins.ChestShop;
+import com.Acrobot.ChestShop.Plugins.GriefPrevenentionBuilding;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.DataStore;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,7 +31,7 @@ public class ShopshareCommand implements CommandExecutor {
                 sender.sendMessage(miniMessage.deserialize("<red>Usage: /shopshare add <player></red>"));
                 return true;
             }
-            AddCommand.addCommand(miniMessage, (Player) sender, args[1]);
+            AddCommand.addCommand((Player) sender, args[1]);
         }
         else if (args[0].equalsIgnoreCase("remove")) {
             if (args.length == 1 || args.length > 2) {

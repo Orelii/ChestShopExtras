@@ -1,7 +1,10 @@
 package com.github.orelii.shopshare.Commands;
 
 import com.github.orelii.shopshare.ShopsharePlayer;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,36 +15,36 @@ import java.io.IOException;
 import java.util.List;
 
 public class AddCommand {
-    public static void addCommand(MiniMessage miniMessage, Player sender, String argument) {
+    private static final MiniMessage miniMessage = MiniMessage.miniMessage();
+
+    public static void addCommand(Player sender, String argument) {
+
+        // Is the player trying to add themselves to their own claim?
         if (sender.getName().equalsIgnoreCase(argument)) {
             sender.sendMessage(miniMessage.deserialize("<red>You can already open your shop chests!</red>"));
             return;
         }
 
-        Player target = null;
+        // Find the target of the command. If they are not online, return.
+        Player target = getTarget(sender, argument);
+        if (target == null) { return; }
 
-        for (Player p : sender.getServer().getOnlinePlayers()) {
-            if (p.getName().equalsIgnoreCase(argument)) { target = p; break; }
-        }
-
-        if (target == null){
-            sender.sendMessage(miniMessage.deserialize("<red>That player is not online!</red>"));
-            return;
-        }
 
         Player commandPlayer = (Player) sender;
-        ShopsharePlayer player = new ShopsharePlayer(commandPlayer.getName(), commandPlayer.getUniqueId().toString());
+        ShopsharePlayer player = new ShopsharePlayer(commandPlayer.getName(), commandPlayer.getUniqueId().toString(), commandPlayer.getLocation());
+        if (!insideTrustedClaim(commandPlayer, player)) return;
+
+
         if (player.getFile() == null) {
             player.makeFile();
         }
         File data = player.getFile();
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
-
-        List<String> trusted = (List<String>) playerData.getList("Trusted.list", null);
+        List<String> trusted = player.getLocalTrustList();
 
         if (!trusted.contains(target.getUniqueId().toString())) {
             trusted.add(target.getUniqueId().toString());
-            playerData.set("Trusted.list", trusted);
+            playerData.set(player.getClaimAtLocation().getID().toString()+".list", trusted);
         }
         else {
             sender.sendMessage(miniMessage.deserialize("<red>That player is already trusted!</red>"));
@@ -56,5 +59,37 @@ public class AddCommand {
         }
 
         sender.sendMessage(miniMessage.deserialize("<blue>" + target.getName() + " has been added to your trusted list.</blue>"));
+    }
+
+
+    private static Player getTarget(Player sender, String argument) {
+        Player target = null;
+
+        for (Player p : sender.getServer().getOnlinePlayers()) {
+            if (p.getName().equalsIgnoreCase(argument)) { target = p; break; }
+        }
+
+        if (target == null){
+            sender.sendMessage(miniMessage.deserialize("<red>That player is not online!</red>"));
+            return null;
+        }
+
+        return target;
+    }
+
+    private static boolean insideTrustedClaim(Player sender, ShopsharePlayer player) {
+        Claim claim = player.getClaimAtLocation();
+
+        if (claim == null) {
+            sender.sendMessage(miniMessage.deserialize("<red>You are not inside a claim!</red>"));
+            return false;
+        }
+
+        if (claim.getOwnerID() == sender.getUniqueId()) { return true; }
+        if (claim.getPermission(sender.getUniqueId().toString()) == ClaimPermission.Build
+        || claim.getPermission(sender.getUniqueId().toString()) == ClaimPermission.Inventory) return true;
+
+        sender.sendMessage(miniMessage.deserialize("<red>You do not have chest permissions in this claim!</red>"));
+        return false;
     }
 }
