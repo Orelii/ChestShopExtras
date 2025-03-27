@@ -1,0 +1,13 @@
+name: Shopshare
+version: '1.0'
+main: com.github.orelii.shopshare.Shopshare
+api-version: '1.21'
+authors: [ Oreli ]
+description: Shopshare plugin for Iridiumcraft
+website: https://github.com/Orelii
+depend: [ ChestShop, GriefPrevention ]
+
+commands:
+  shopshare:
+    description: "Main command to manage shopshare access"
+    usage: "/shopshare [add/remove/list]"
