@@ -1,5 +1,6 @@
 package com.github.orelii.shopshare.Events;
 
+import com.Acrobot.ChestShop.Events.PreTransactionEvent;
 import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
 import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
 import com.Acrobot.ChestShop.Plugins.ChestShop;
@@ -68,7 +69,7 @@ public class EventListener implements Listener {
             if (globalTrusted == null) return;
             else trusted = globalTrusted;
         }
-        
+
 
         if (!globalTrusted.contains(player.getUUID().toString())) {
             if (!trusted.contains(player.getUUID().toString())) {
@@ -107,6 +108,24 @@ public class EventListener implements Listener {
             shops.save(data);
         } catch (IOException ex) {
             Bukkit.getLogger().log(Level.WARNING, "Could not save shops.yml after shop destruction", ex);
+        }
+    }
+
+
+    @EventHandler
+    public void PreTransactionEvent(PreTransactionEvent e){
+        ShopsharePlayer owner = new ShopsharePlayer(e.getOwnerAccount().getUuid().toString(), e.getSign().getLocation());
+        List<String> trusted = owner.getLocalTrustList();
+        List<String> globalTrusted = owner.getGlobalTrustList();
+
+        if (trusted == null) {
+            if (globalTrusted == null) return;
+            else trusted = globalTrusted;
+        }
+        ;
+        if (globalTrusted.contains(e.getClient().getUniqueId().toString()) || trusted.contains(e.getClient().getUniqueId().toString())) {
+            e.getClient().sendMessage(miniMessage.deserialize("<red>You cannot buy or sell from a shop you have access to!</red>"));
+            e.setCancelled(true);
         }
     }
 }
