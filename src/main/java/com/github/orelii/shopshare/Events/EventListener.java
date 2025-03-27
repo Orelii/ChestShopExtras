@@ -43,10 +43,14 @@ public class EventListener implements Listener {
         ShopsharePlayer player = new ShopsharePlayer(e.getPlayer());
         Claim claim = player.getClaimAtLocation();
 
-        if (claim == null) return;
-        else {
+        if (claim != null){
             if (claim.getPermission(player.getUUID().toString()) != ClaimPermission.Inventory
-                    && claim.getPermission(player.getUUID().toString()) != ClaimPermission.Build) return;
+                    && claim.getPermission(player.getUUID().toString()) != ClaimPermission.Build) {
+                if (claim.getOwnerID() != player.getUUID()) return;
+                if (claim.getOwnerName() != player.getName()) return;
+                e.getPlayer().sendMessage(miniMessage.deserialize("<red>You do not have permission to open this shop. Ask the claim owner to trust you.</red>"));
+                return;
+            }
         }
 
         File data = new File(Shopshare.getPlugin(Shopshare.class).getDataFolder(), File.separator + "shops.yml");
@@ -60,10 +64,16 @@ public class EventListener implements Listener {
         List<String> trusted = owner.getLocalTrustList();
         List<String> globalTrusted = owner.getGlobalTrustList();
 
-        if (trusted == null && globalTrusted == null) return;
+        if (trusted == null) {
+            if (globalTrusted == null) return;
+            else trusted = globalTrusted;
+        }
+        
 
-        if (!trusted.contains(player.getUUID().toString())) {
-            if (!globalTrusted.contains(player.getUUID().toString())) { return; }
+        if (!globalTrusted.contains(player.getUUID().toString())) {
+            if (!trusted.contains(player.getUUID().toString())) {
+                return;
+            }
         }
 
         Inventory shopInv = chest.getBlockInventory();

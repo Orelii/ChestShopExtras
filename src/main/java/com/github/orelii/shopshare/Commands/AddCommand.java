@@ -100,7 +100,6 @@ public class AddCommand {
         Claim claim = player.getClaimAtLocation();
 
         if (claim == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>You are not inside a claim!</red>"));
             return false;
         }
 
