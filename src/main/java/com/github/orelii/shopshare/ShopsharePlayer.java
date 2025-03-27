@@ -37,6 +37,11 @@ public class ShopsharePlayer{
         _Location = player.getLocation();
     }
 
+    public ShopsharePlayer(String uuid, Location location) {
+        _UUID = uuid;
+        _Location = location;
+    }
+
     public void makeFile(){
         File data = new File(plugin.getDataFolder(), File.separator + _UUID + ".yml");
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
@@ -77,6 +82,17 @@ public class ShopsharePlayer{
         if (claim == null) { return null; }
 
         List<String> trusted = (List<String>) playerData.getList(claim.getID().toString()+".list", null);
+        if (trusted == null) { trusted = new ArrayList<String>(); }
+
+        return trusted;
+    }
+
+
+    public List<String> getGlobalTrustList(){
+        File data = getFile();
+        FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
+
+        List<String> trusted = (List<String>) playerData.getList("globalTrust.list", null);
         if (trusted == null) { trusted = new ArrayList<String>(); }
 
         return trusted;

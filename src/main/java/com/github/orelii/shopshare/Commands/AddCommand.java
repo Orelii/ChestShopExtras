@@ -4,8 +4,6 @@ import com.github.orelii.shopshare.ShopsharePlayer;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -30,35 +28,57 @@ public class AddCommand {
         if (target == null) { return; }
 
 
-        Player commandPlayer = (Player) sender;
-        ShopsharePlayer player = new ShopsharePlayer(commandPlayer.getName(), commandPlayer.getUniqueId().toString(), commandPlayer.getLocation());
-        if (!insideTrustedClaim(commandPlayer, player)) return;
-
-
+        ShopsharePlayer player = new ShopsharePlayer(sender.getName(), sender.getUniqueId().toString(), sender.getLocation());
         if (player.getFile() == null) {
             player.makeFile();
         }
         File data = player.getFile();
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
-        List<String> trusted = player.getLocalTrustList();
 
-        if (!trusted.contains(target.getUniqueId().toString())) {
-            trusted.add(target.getUniqueId().toString());
-            playerData.set(player.getClaimAtLocation().getID().toString()+".list", trusted);
+        if (!insideTrustedClaim(sender, player)) {
+            List<String> trusted = player.getGlobalTrustList();
+            if (trusted == null) {
+                sender.sendMessage(miniMessage.deserialize("<red>You are not within a claim!</red>"));
+                return;
+            }
+
+            if (!trusted.contains(target.getUniqueId().toString())) {
+                trusted.add(target.getUniqueId().toString());
+                playerData.set(player.getClaimAtLocation().getID().toString() + ".list", trusted);
+            } else {
+                sender.sendMessage(miniMessage.deserialize("<red>That player is already globally trusted!</red>"));
+                return;
+            }
+
+            try {
+                playerData.save(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            sender.sendMessage(miniMessage.deserialize("<blue>" + target.getName() + " has been added to your global trust list.</blue>"));
         }
         else {
-            sender.sendMessage(miniMessage.deserialize("<red>That player is already trusted!</red>"));
-            return;
-        }
+            List<String> trusted = player.getLocalTrustList();
+            if (trusted == null) {
+                sender.sendMessage(miniMessage.deserialize("<red>You are not within a claim!</red>"));
+                return;
+            }
 
-        try {
-            playerData.save(data);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+            if (!trusted.contains(target.getUniqueId().toString())) {
+                trusted.add(target.getUniqueId().toString());
+                playerData.set(player.getClaimAtLocation().getID().toString() + ".list", trusted);
+            } else {
+                sender.sendMessage(miniMessage.deserialize("<red>That player is already trusted!</red>"));
+                return;
+            }
 
-        sender.sendMessage(miniMessage.deserialize("<blue>" + target.getName() + " has been added to your trusted list.</blue>"));
+            try {
+                playerData.save(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            sender.sendMessage(miniMessage.deserialize("<blue>" + target.getName() + " has been added to your trusted list.</blue>"));
+        }
     }
 
 
@@ -86,6 +106,7 @@ public class AddCommand {
         }
 
         if (claim.getOwnerID() == sender.getUniqueId()) { return true; }
+        if (claim.getOwnerName() == sender.getName()) { return true; }
         if (claim.getPermission(sender.getUniqueId().toString()) == ClaimPermission.Build
         || claim.getPermission(sender.getUniqueId().toString()) == ClaimPermission.Inventory) return true;
 

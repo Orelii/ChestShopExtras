@@ -4,7 +4,6 @@ import com.github.orelii.shopshare.ShopsharePlayer;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -12,12 +11,13 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 public class RemoveCommand {
+
     public static void removeCommand(MiniMessage miniMessage, Player sender, String argument) {
+
         if (sender.getName().equalsIgnoreCase(argument)) {
-            sender.sendMessage(miniMessage.deserialize("<red>You can already open your shop chests!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<red>You can't remove yourself!</red>"));
             return;
         }
 
@@ -27,6 +27,7 @@ public class RemoveCommand {
             return;
         }
 
+
         Player target = Bukkit.getPlayerExact(argument);
         String name = "";
         String uuid = "";
@@ -34,19 +35,29 @@ public class RemoveCommand {
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
         List<String> trusted = player.getLocalTrustList();
 
+        if (trusted == null) {
+            sender.sendMessage(miniMessage.deserialize("<red>You are not within a claim!</red>"));
+            return;
+        }
+
         if (target == null) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(argument);
             name = offlinePlayer.getName();
             uuid = offlinePlayer.getUniqueId().toString();
+
+            // OfflinePlayers will always return a value even if no account associated exists.
+            // Thus, we need to check if the name is empty instead of checking if offlinePlayer is null.
             if (name == "") {
                 sender.sendMessage(miniMessage.deserialize("<red>That player does not exist!</red>"));
                 return;
             }
         }
-        else{
+        else
+        {
             name = target.getName();
             uuid = target.getUniqueId().toString();
         }
+
 
         if (trusted.contains(uuid)) {
             trusted.remove(uuid);
@@ -57,12 +68,14 @@ public class RemoveCommand {
             return;
         }
 
+
         try {
             playerData.save(data);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+
 
         sender.sendMessage(miniMessage.deserialize("<blue>" + name + " has been removed from your trusted list.</blue>"));
     }
