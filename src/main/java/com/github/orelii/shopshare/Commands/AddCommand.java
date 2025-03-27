@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class AddCommand {
-    public static void addCommand(MiniMessage miniMessage, CommandSender sender, String argument) {
+    public static void addCommand(MiniMessage miniMessage, Player sender, String argument) {
         if (sender.getName().equalsIgnoreCase(argument)) {
             sender.sendMessage(miniMessage.deserialize("<red>You can already open your shop chests!</red>"));
             return;
@@ -39,8 +39,8 @@ public class AddCommand {
 
         List<String> trusted = (List<String>) playerData.getList("Trusted.list", null);
 
-        if (!trusted.contains(target.getName())) {
-            trusted.add(target.getName().toString());
+        if (!trusted.contains(target.getUniqueId().toString())) {
+            trusted.add(target.getUniqueId().toString());
             playerData.set("Trusted.list", trusted);
         }
         else {
