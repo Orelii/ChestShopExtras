@@ -38,13 +38,12 @@ public class AddCommand {
         if (!insideTrustedClaim(sender, player)) {
             List<String> trusted = player.getGlobalTrustList();
             if (trusted == null) {
-                sender.sendMessage(miniMessage.deserialize("<red>You are not within a claim!</red>"));
                 return;
             }
 
             if (!trusted.contains(target.getUniqueId().toString())) {
                 trusted.add(target.getUniqueId().toString());
-                playerData.set(player.getClaimAtLocation().getID().toString() + ".list", trusted);
+                playerData.set("globalTrust.list", trusted);
             } else {
                 sender.sendMessage(miniMessage.deserialize("<red>That player is already globally trusted!</red>"));
                 return;

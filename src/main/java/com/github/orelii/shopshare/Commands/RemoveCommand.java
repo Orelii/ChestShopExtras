@@ -34,10 +34,11 @@ public class RemoveCommand {
         File data = player.getFile();
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
         List<String> trusted = player.getLocalTrustList();
+        boolean global = false;
 
         if (trusted == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>You are not within a claim!</red>"));
-            return;
+            trusted = player.getGlobalTrustList();
+            global = true;
         }
 
         if (target == null) {
@@ -61,7 +62,8 @@ public class RemoveCommand {
 
         if (trusted.contains(uuid)) {
             trusted.remove(uuid);
-            playerData.set(player.getClaimAtLocation().getID().toString()+".list", trusted);
+            if (global) { playerData.set("globalTrust.list", trusted); }
+            else { playerData.set(player.getClaimAtLocation().getID().toString()+".list", trusted); }
         }
         else {
             sender.sendMessage(miniMessage.deserialize("<red>That player is not trusted!</red>"));
@@ -76,8 +78,9 @@ public class RemoveCommand {
             e.printStackTrace();
         }
 
+        if (global) { sender.sendMessage(miniMessage.deserialize("<blue>" + name + " has been removed from your global trust list.</blue>")); }
+        else { sender.sendMessage(miniMessage.deserialize("<blue>" + name + " has been removed from your trusted list.</blue>")); }
 
-        sender.sendMessage(miniMessage.deserialize("<blue>" + name + " has been removed from your trusted list.</blue>"));
     }
 
 }

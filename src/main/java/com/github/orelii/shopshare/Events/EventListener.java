@@ -44,8 +44,10 @@ public class EventListener implements Listener {
         Claim claim = player.getClaimAtLocation();
 
         if (claim == null) return;
-        if (claim.getPermission(player.getUUID().toString()) != ClaimPermission.Inventory
-        && claim.getPermission(player.getUUID().toString()) != ClaimPermission.Build) return;
+        else {
+            if (claim.getPermission(player.getUUID().toString()) != ClaimPermission.Inventory
+                    && claim.getPermission(player.getUUID().toString()) != ClaimPermission.Build) return;
+        }
 
         File data = new File(Shopshare.getPlugin(Shopshare.class).getDataFolder(), File.separator + "shops.yml");
         FileConfiguration shops = YamlConfiguration.loadConfiguration(data);
@@ -56,12 +58,13 @@ public class EventListener implements Listener {
 
         ShopsharePlayer owner = new ShopsharePlayer(ownerUUID, chest.getLocation());
         List<String> trusted = owner.getLocalTrustList();
+        List<String> globalTrusted = owner.getGlobalTrustList();
 
-        if (trusted == null) {
-            e.getPlayer().sendMessage(miniMessage.deserialize("<red>You are not within a claim!</red>"));
+        if (trusted == null && globalTrusted == null) return;
+
+        if (!trusted.contains(player.getUUID().toString())) {
+            if (!globalTrusted.contains(player.getUUID().toString())) { return; }
         }
-
-        if (!trusted.contains(player.getUUID().toString())) return;
 
         Inventory shopInv = chest.getBlockInventory();
         e.getPlayer().openInventory(shopInv);

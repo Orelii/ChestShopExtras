@@ -28,8 +28,7 @@ public class ListCommand {
         List<String> trusted = player.getLocalTrustList();
 
         if (trusted == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>You are not within a claim!</red>"));
-            return;
+            trusted = player.getGlobalTrustList();
         }
 
         if (trusted.isEmpty()) {
