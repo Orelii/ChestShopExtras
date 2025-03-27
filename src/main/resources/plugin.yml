@@ -10,4 +10,4 @@ depend: [ ChestShop, GriefPrevention ]
 commands:
   shopshare:
     description: "Main command to manage shopshare access"
-    usage: "/shopshare [add/remove/list]"
+    usage: "/shopshare [add/remove/list/help]"
