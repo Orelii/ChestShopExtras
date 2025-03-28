@@ -77,7 +77,7 @@ public class EventListener implements Listener {
             }
         }
 
-        Inventory shopInv = chest.getBlockInventory();
+        Inventory shopInv = chest.getInventory();
         e.getPlayer().openInventory(shopInv);
     }
 

@@ -1,5 +1,6 @@
 package com.github.orelii.shopshare.Commands;
 
+import com.github.orelii.shopshare.Shopshare;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,8 +51,16 @@ public class ShopshareCommand implements CommandExecutor {
             sender.sendMessage(miniMessage.deserialize("<gold>/shopshare remove <player></gold><gray> - Removes a player from your shopshare list for the claim you are in.</gray>"));
             sender.sendMessage(miniMessage.deserialize("<gold>/shopshare list</gold><gray> - Lists all the players on your shopshare list for the claim you are in.</gray>"));
             sender.sendMessage(miniMessage.deserialize("<gold>/shopshare help</gold><gray> - Display this help message.</gray>"));
+            sender.sendMessage(miniMessage.deserialize("<gold>/shopshare version</gold><gray> - Display the plugin version.</gray>"));
             sender.sendMessage(miniMessage.deserialize("<dark_aqua>========</dark_aqua><aqua>Shopshare</aqua><dark_aqua>========</dark_aqua>"));
         }
+
+        // /shopshare version command
+        else if (args[0].equalsIgnoreCase("version")||args[0].equalsIgnoreCase("v")) {
+            sender.sendMessage(miniMessage.deserialize("<dark_aqua>Shopshare version 1.0 - By Oreli</dark_aqua>"));
+            sender.sendMessage(miniMessage.deserialize("<dark_aqua>https://github.com/Orelii/Shopshare</dark_aqua>"));
+        }
+
         else {
             sender.sendMessage(miniMessage.deserialize("<red>Unknown command!</red>"));
             return true;
