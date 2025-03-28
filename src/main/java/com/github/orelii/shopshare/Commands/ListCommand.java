@@ -17,7 +17,7 @@ public class ListCommand {
     public static void listCommand(MiniMessage miniMessage, Player sender) {
 
         ShopsharePlayer player = new ShopsharePlayer(sender.getName(), sender.getUniqueId().toString(), sender.getLocation());
-
+        boolean global = false;
 
         if (player.getFile() == null) {
             sender.sendMessage(miniMessage.deserialize("<red>You have no trusted players!</red>"));
@@ -29,15 +29,17 @@ public class ListCommand {
 
         if (trusted == null) {
             trusted = player.getGlobalTrustList();
+            global = true;
         }
 
         if (trusted.isEmpty()) {
-            sender.sendMessage(miniMessage.deserialize("<red>You have no trusted players!</red>"));
+            if (global) { sender.sendMessage(miniMessage.deserialize("<red>You have no globally trusted players!</red>")); }
+            else { sender.sendMessage(miniMessage.deserialize("<red>You have no trusted players!</red>")); }
             return;
         }
 
-
-        sender.sendMessage(miniMessage.deserialize("<aqua>Trusted players:</aqua>"));
+        if (global) { sender.sendMessage(miniMessage.deserialize("<aqua>Globally trusted players:</aqua>")); }
+        else { sender.sendMessage(miniMessage.deserialize("<aqua>Trusted players:</aqua>")); }
         for (String s : trusted) {
 
             Player target = Bukkit.getPlayer(s);
