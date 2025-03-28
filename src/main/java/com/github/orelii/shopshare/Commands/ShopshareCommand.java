@@ -47,9 +47,9 @@ public class ShopshareCommand implements CommandExecutor {
         // /shopshare help command
         else if (args[0].equalsIgnoreCase("help")) {
             sender.sendMessage(miniMessage.deserialize("<dark_aqua>========</dark_aqua><aqua>Shopshare</aqua><dark_aqua>========</dark_aqua>"));
-            sender.sendMessage(miniMessage.deserialize("<gold>/shopshare add <player></gold><gray> - Adds a player to your shopshare list for the claim you are in.</gray>"));
-            sender.sendMessage(miniMessage.deserialize("<gold>/shopshare remove <player></gold><gray> - Removes a player from your shopshare list for the claim you are in.</gray>"));
-            sender.sendMessage(miniMessage.deserialize("<gold>/shopshare list</gold><gray> - Lists all the players on your shopshare list for the claim you are in.</gray>"));
+            sender.sendMessage(miniMessage.deserialize("<gold>/shopshare add <player></gold><gray> - Adds a player to your shopshare list.</gray>"));
+            sender.sendMessage(miniMessage.deserialize("<gold>/shopshare remove <player></gold><gray> - Removes a player from your shopshare list.</gray>"));
+            sender.sendMessage(miniMessage.deserialize("<gold>/shopshare list</gold><gray> - Lists all the players on your shopshare list.</gray>"));
             sender.sendMessage(miniMessage.deserialize("<gold>/shopshare help</gold><gray> - Display this help message.</gray>"));
             sender.sendMessage(miniMessage.deserialize("<gold>/shopshare version</gold><gray> - Display the plugin version.</gray>"));
             sender.sendMessage(miniMessage.deserialize("<dark_aqua>========</dark_aqua><aqua>Shopshare</aqua><dark_aqua>========</dark_aqua>"));

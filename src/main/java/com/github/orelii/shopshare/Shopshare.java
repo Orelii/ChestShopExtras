@@ -1,6 +1,7 @@
 package com.github.orelii.shopshare;
 
 import com.github.orelii.shopshare.Commands.ShopshareCommand;
+import com.github.orelii.shopshare.Commands.TabAutocomplete;
 import com.github.orelii.shopshare.Events.EventListener;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,6 +16,7 @@ public final class Shopshare extends JavaPlugin {
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
         getCommand("shopshare").setExecutor(new ShopshareCommand());
+        getCommand("shopshare").setTabCompleter(new TabAutocomplete());
 
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
