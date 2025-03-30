@@ -17,13 +17,13 @@ public class RemoveCommand {
     public static void removeCommand(MiniMessage miniMessage, Player sender, String argument) {
 
         if (sender.getName().equalsIgnoreCase(argument)) {
-            sender.sendMessage(miniMessage.deserialize("<red>You can't remove yourself!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>You can't remove yourself!</red>"));
             return;
         }
 
         ShopsharePlayer player = new ShopsharePlayer(sender.getName(), sender.getUniqueId().toString(), sender.getLocation());
         if (player.getFile() == null) {
-            sender.sendMessage(miniMessage.deserialize("<red>That player is not trusted!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player is not trusted!</red>"));
             return;
         }
 
@@ -49,7 +49,7 @@ public class RemoveCommand {
             // OfflinePlayers will always return a value even if no account associated exists.
             // Thus, we need to check if the name is empty instead of checking if offlinePlayer is null.
             if (name == "") {
-                sender.sendMessage(miniMessage.deserialize("<red>That player does not exist!</red>"));
+                sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player does not exist!</red>"));
                 return;
             }
         }
@@ -66,7 +66,7 @@ public class RemoveCommand {
             else { playerData.set(player.getClaimAtLocation().getID().toString()+".list", trusted); }
         }
         else {
-            sender.sendMessage(miniMessage.deserialize("<red>That player is not trusted!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player is not trusted!</red>"));
             return;
         }
 
@@ -78,9 +78,11 @@ public class RemoveCommand {
             e.printStackTrace();
         }
 
-        if (global) { sender.sendMessage(miniMessage.deserialize("<blue>" + name + " has been removed from your global trust list.</blue>")); }
-        else { sender.sendMessage(miniMessage.deserialize("<blue>" + name + " has been removed from your trusted list.</blue>")); }
-
+        if (global) {
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + name + " has been removed from your global trust list.</blue>"));
+        }
+        else {
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + name + " has been removed from your trusted list.</blue>")); }
     }
 
 }

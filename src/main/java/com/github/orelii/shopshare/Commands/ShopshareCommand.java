@@ -1,6 +1,5 @@
 package com.github.orelii.shopshare.Commands;
 
-import com.github.orelii.shopshare.Shopshare;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,17 +13,17 @@ public class ShopshareCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
         if (!(sender instanceof Player)){
-            sender.sendMessage(miniMessage.deserialize("<red>Only a player may use this command!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>Only a player may use this command!</red>"));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(miniMessage.deserialize("<red>Usage: /shopshare [add/remove/list]"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>Usage: /shopshare [add/remove/list]"));
         }
         // /shopshare add command
         if (args[0].equalsIgnoreCase("add")) {
             if (args.length == 1 || args.length > 2) {
-                sender.sendMessage(miniMessage.deserialize("<red>Usage: /shopshare add <player></red>"));
+                sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>Usage: /shopshare add <player></red>"));
                 return true;
             }
             AddCommand.addCommand((Player) sender, args[1]);
@@ -33,7 +32,7 @@ public class ShopshareCommand implements CommandExecutor {
         // /shopshare remove command
         else if (args[0].equalsIgnoreCase("remove")) {
             if (args.length == 1 || args.length > 2) {
-                sender.sendMessage(miniMessage.deserialize("<red>Usage: /shopshare remove <player></red>"));
+                sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>Usage: /shopshare remove <player></red>"));
                 return true;
             }
             RemoveCommand.removeCommand(miniMessage, (Player) sender, args[1]);
@@ -62,7 +61,7 @@ public class ShopshareCommand implements CommandExecutor {
         }
 
         else {
-            sender.sendMessage(miniMessage.deserialize("<red>Unknown command!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>Unknown command!</red>"));
             return true;
         }
 

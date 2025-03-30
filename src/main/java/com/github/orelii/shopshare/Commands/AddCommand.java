@@ -19,7 +19,7 @@ public class AddCommand {
 
         // Is the player trying to add themselves to their own claim?
         if (sender.getName().equalsIgnoreCase(argument)) {
-            sender.sendMessage(miniMessage.deserialize("<red>You can already open your shop chests!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>You can already open your shop chests!</red>"));
             return;
         }
 
@@ -45,7 +45,7 @@ public class AddCommand {
                 trusted.add(target.getUniqueId().toString());
                 playerData.set("globalTrust.list", trusted);
             } else {
-                sender.sendMessage(miniMessage.deserialize("<red>That player is already globally trusted!</red>"));
+                sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player is already globally trusted!</red>"));
                 return;
             }
 
@@ -54,12 +54,13 @@ public class AddCommand {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            sender.sendMessage(miniMessage.deserialize("<blue>" + target.getName() + " has been added to your global trust list.</blue>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + target.getName() + " has been added to your global trust list.</blue>"));
+            target.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + sender.getName() + " has added you to their global trust list.</blue>"));
         }
         else {
             List<String> trusted = player.getLocalTrustList();
             if (trusted == null) {
-                sender.sendMessage(miniMessage.deserialize("<red>You are not within a claim!</red>"));
+                sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>You are not within a claim!</red>"));
                 return;
             }
 
@@ -67,7 +68,7 @@ public class AddCommand {
                 trusted.add(target.getUniqueId().toString());
                 playerData.set(player.getClaimAtLocation().getID().toString() + ".list", trusted);
             } else {
-                sender.sendMessage(miniMessage.deserialize("<red>That player is already trusted!</red>"));
+                sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player is already trusted!</red>"));
                 return;
             }
 
@@ -76,7 +77,8 @@ public class AddCommand {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            sender.sendMessage(miniMessage.deserialize("<blue>" + target.getName() + " has been added to your trusted list.</blue>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + target.getName() + " has been added to your trusted list.</blue>"));
+            target.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + sender.getName() + " has added you to their trusted list.</blue>"));
         }
     }
 
@@ -89,7 +91,7 @@ public class AddCommand {
         }
 
         if (target == null){
-            sender.sendMessage(miniMessage.deserialize("<red>That player is not online!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player is not online!</red>"));
             return null;
         }
 
@@ -108,7 +110,7 @@ public class AddCommand {
         if (claim.getPermission(sender.getUniqueId().toString()) == ClaimPermission.Build
         || claim.getPermission(sender.getUniqueId().toString()) == ClaimPermission.Inventory) return true;
 
-        sender.sendMessage(miniMessage.deserialize("<red>You do not have chest permissions in this claim!</red>"));
+        sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>You do not have chest permissions in this claim!</red>"));
         return false;
     }
 }

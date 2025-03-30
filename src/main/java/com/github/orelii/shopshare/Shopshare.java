@@ -4,8 +4,6 @@ import com.github.orelii.shopshare.Commands.ShopshareCommand;
 import com.github.orelii.shopshare.Commands.TabAutocomplete;
 import com.github.orelii.shopshare.Events.EventListener;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
