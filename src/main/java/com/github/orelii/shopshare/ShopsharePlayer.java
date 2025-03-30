@@ -76,6 +76,9 @@ public class ShopsharePlayer{
 
     public List<String> getLocalTrustList(){
         File data = getFile();
+
+        if (data == null) { return null; }
+
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
         Claim claim = getClaimAtLocation();
 
@@ -90,6 +93,9 @@ public class ShopsharePlayer{
 
     public List<String> getGlobalTrustList(){
         File data = getFile();
+
+        if (data == null) { return null; }
+
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
 
         List<String> trusted = (List<String>) playerData.getList("globalTrust.list", null);
