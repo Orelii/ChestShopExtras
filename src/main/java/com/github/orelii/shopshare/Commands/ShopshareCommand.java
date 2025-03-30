@@ -18,7 +18,8 @@ public class ShopshareCommand implements CommandExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>Usage: /shopshare [add/remove/list]"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>Usage: /shopshare [add/remove/list/help/version]"));
+            return true;
         }
         // /shopshare add command
         if (args[0].equalsIgnoreCase("add")) {
