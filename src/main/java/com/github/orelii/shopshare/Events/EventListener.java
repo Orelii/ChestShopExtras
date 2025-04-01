@@ -41,10 +41,10 @@ public class EventListener implements Listener {
         Claim claim = player.getClaimAtLocation();
 
         if (claim != null){
-            if (claim.getOwnerID() != player.getUUID()) return;
-            if (claim.getOwnerName() != player.getName()) return;
             if (claim.getPermission(player.getUUID().toString()) != ClaimPermission.Inventory
                     && claim.getPermission(player.getUUID().toString()) != ClaimPermission.Build) {
+                if (claim.getOwnerID() != player.getUUID()) return;
+                if (claim.getOwnerName() != player.getName()) return;
                 e.getPlayer().sendMessage(miniMessage.deserialize("<red>You do not have permission to open this shop. Ask the claim owner to trust you.</red>"));
                 return;
             }
