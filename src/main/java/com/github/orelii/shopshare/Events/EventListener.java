@@ -38,7 +38,7 @@ public class EventListener implements Listener {
         if (!ChestShopSign.isShopBlock(block)) return;
 
         Chest chest = (Chest) block.getState();
-        ShopsharePlayer player = new ShopsharePlayer(e.getPlayer());
+        ShopsharePlayer player = new ShopsharePlayer(e.getPlayer().getUniqueId().toString(), e.getClickedBlock().getLocation());
         Claim claim = player.getClaimAtLocation();
 
         if (claim != null){

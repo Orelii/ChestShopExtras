@@ -57,7 +57,7 @@ public class ShopshareCommand implements CommandExecutor {
 
         // /shopshare version command
         else if (args[0].equalsIgnoreCase("version")||args[0].equalsIgnoreCase("v")) {
-            sender.sendMessage(miniMessage.deserialize("<dark_aqua>Shopshare version 1.0.1 - By Oreli</dark_aqua>"));
+            sender.sendMessage(miniMessage.deserialize("<dark_aqua>Shopshare version 1.0.2 - By Oreli</dark_aqua>"));
             sender.sendMessage(miniMessage.deserialize("<dark_aqua>https://github.com/Orelii/Shopshare</dark_aqua>"));
         }
 
