@@ -4,6 +4,7 @@ import com.Acrobot.ChestShop.Events.PreTransactionEvent;
 import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
 import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
+import com.Acrobot.ChestShop.Utils.uBlock;
 import com.github.orelii.shopshare.Shopshare;
 import com.github.orelii.shopshare.ShopsharePlayer;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -114,12 +115,19 @@ public class EventListener implements Listener {
         ShopsharePlayer owner = new ShopsharePlayer(e.getOwnerAccount().getUuid().toString(), e.getSign().getLocation());
         List<String> trusted = owner.getLocalTrustList();
         List<String> globalTrusted = owner.getGlobalTrustList();
+        ShopsharePlayer player = new ShopsharePlayer(e.getClient().getUniqueId().toString(), uBlock.findConnectedContainer(e.getSign()).getLocation());
+        Claim claim = player.getClaimAtLocation();
 
         if (trusted == null) {
             if (globalTrusted == null) return;
             else trusted = globalTrusted;
         }
-        ;
+
+        if (claim != null){
+            if (claim.getPermission(player.getUUID().toString()) != ClaimPermission.Inventory
+                    && claim.getPermission(player.getUUID().toString()) != ClaimPermission.Build) return;
+        }
+
         if (globalTrusted.contains(e.getClient().getUniqueId().toString()) || trusted.contains(e.getClient().getUniqueId().toString())) {
             e.getClient().sendMessage(miniMessage.deserialize("<red>You cannot buy or sell from a shop you have access to!</red>"));
             e.setCancelled(true);
