@@ -30,7 +30,8 @@ public class EventListener implements Listener {
     public void OpenChestEvent(PlayerInteractEvent e) {
         Block block = e.getClickedBlock();
         if (block == null) return;
-        if (block.getType() != Material.CHEST && block.getType() != Material.TRAPPED_CHEST) return; // Is this needed if you have if (!ChestShopSign.isShopBlock(block)) return;
+        // Possible to have non-chest shops with admin shenanigans, doubt it'll come up ever in survival but have this here in case anyone messes around with op
+        if (block.getType() != Material.CHEST && block.getType() != Material.TRAPPED_CHEST) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (!ChestShopSign.isShopBlock(block)) return;
 
