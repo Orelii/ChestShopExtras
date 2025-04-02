@@ -6,7 +6,7 @@
 
     <groupId>com.github.orelii</groupId>
     <artifactId>shopshare</artifactId>
-    <version>1.0</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
     <name>shopshare</name>

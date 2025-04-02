@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+
 public class ShopshareCommand implements CommandExecutor {
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
@@ -27,7 +29,11 @@ public class ShopshareCommand implements CommandExecutor {
                 sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>Usage: /shopshare add <player></red>"));
                 return true;
             }
-            AddCommand.addCommand((Player) sender, args[1]);
+            try {
+                AddCommand.addCommand((Player) sender, args[1]);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         // /shopshare remove command
@@ -36,7 +42,11 @@ public class ShopshareCommand implements CommandExecutor {
                 sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>Usage: /shopshare remove <player></red>"));
                 return true;
             }
-            RemoveCommand.removeCommand(miniMessage, (Player) sender, args[1]);
+            try {
+                RemoveCommand.removeCommand(miniMessage, (Player) sender, args[1]);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         // /shopshare list command
@@ -57,7 +67,7 @@ public class ShopshareCommand implements CommandExecutor {
 
         // /shopshare version command
         else if (args[0].equalsIgnoreCase("version")||args[0].equalsIgnoreCase("v")) {
-            sender.sendMessage(miniMessage.deserialize("<dark_aqua>Shopshare version 1.0.2 - By Oreli</dark_aqua>"));
+            sender.sendMessage(miniMessage.deserialize("<dark_aqua>Shopshare version 1.0.3 - By Oreli</dark_aqua>"));
             sender.sendMessage(miniMessage.deserialize("<dark_aqua>https://github.com/Orelii/Shopshare</dark_aqua>"));
         }
 

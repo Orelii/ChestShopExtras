@@ -4,11 +4,8 @@ import com.github.orelii.shopshare.ShopsharePlayer;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,18 +40,17 @@ public class ListCommand {
         for (String s : trusted) {
 
             Player target = Bukkit.getPlayer(s);
-            String name = "";
+            String name;
 
             if (target == null) {
 
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(s));
                 name = offlinePlayer.getName();
 
-                if (name == "") {
+                if (name == null || name.isEmpty()) {
                     continue;
                 }
-            }
-            else { name = target.getName(); }
+            } else { name = target.getName(); }
             sender.sendMessage(miniMessage.deserialize("<blue>    ○ " + name + "</blue>"));
         }
     }

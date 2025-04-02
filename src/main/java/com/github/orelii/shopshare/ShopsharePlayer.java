@@ -42,7 +42,7 @@ public class ShopsharePlayer{
         _Location = location;
     }
 
-    public void makeFile(){
+    public void makeFile() throws IOException {
         File data = new File(plugin.getDataFolder(), File.separator + _UUID + ".yml");
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
 
@@ -59,7 +59,7 @@ public class ShopsharePlayer{
 
             }
             catch (IOException e) {
-                e.printStackTrace();
+                throw new IOException(e);
             }
         }
     }
@@ -84,10 +84,7 @@ public class ShopsharePlayer{
 
         if (claim == null) { return null; }
 
-        List<String> trusted = (List<String>) playerData.getList(claim.getID().toString()+".list", null);
-        if (trusted == null) { trusted = new ArrayList<String>(); }
-
-        return trusted;
+        return playerData.getStringList(claim.getID().toString()+".list");
     }
 
 
@@ -98,10 +95,7 @@ public class ShopsharePlayer{
 
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
 
-        List<String> trusted = (List<String>) playerData.getList("globalTrust.list", null);
-        if (trusted == null) { trusted = new ArrayList<String>(); }
-
-        return trusted;
+        return playerData.getStringList("globalTrust.list");
     }
 
 
