@@ -14,7 +14,7 @@ import java.util.List;
 
 public class RemoveCommand {
 
-    public static void removeCommand(MiniMessage miniMessage, Player sender, String argument) {
+    public static void removeCommand(MiniMessage miniMessage, Player sender, String argument) throws IOException {
 
         if (sender.getName().equalsIgnoreCase(argument)) {
             sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>You can't remove yourself!</red>"));
@@ -29,8 +29,8 @@ public class RemoveCommand {
 
 
         Player target = Bukkit.getPlayerExact(argument);
-        String name = "";
-        String uuid = "";
+        String name;
+        String uuid;
         File data = player.getFile();
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(data);
         List<String> trusted = player.getLocalTrustList();
@@ -48,13 +48,11 @@ public class RemoveCommand {
 
             // OfflinePlayers will always return a value even if no account associated exists.
             // Thus, we need to check if the name is empty instead of checking if offlinePlayer is null.
-            if (name == "") {
+            if (name == null || name.isEmpty()) {
                 sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player does not exist!</red>"));
                 return;
             }
-        }
-        else
-        {
+        } else {
             name = target.getName();
             uuid = target.getUniqueId().toString();
         }
@@ -62,10 +60,12 @@ public class RemoveCommand {
 
         if (trusted.contains(uuid)) {
             trusted.remove(uuid);
-            if (global) { playerData.set("globalTrust.list", trusted); }
-            else { playerData.set(player.getClaimAtLocation().getID().toString()+".list", trusted); }
-        }
-        else {
+            if (global) {
+                playerData.set("globalTrust.list", trusted);
+            } else {
+                playerData.set(player.getClaimAtLocation().getID().toString() + ".list", trusted);
+            }
+        } else {
             sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player is not trusted!</red>"));
             return;
         }
@@ -73,16 +73,10 @@ public class RemoveCommand {
 
         try {
             playerData.save(data);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new IOException(e);
         }
 
-        if (global) {
-            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + name + " has been removed from your global trust list.</blue>"));
-        }
-        else {
-            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + name + " has been removed from your trusted list.</blue>")); }
+        sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + name + " has been removed from your" + (global ? " global" : "") + " trust list.</blue>"));
     }
-
 }

@@ -15,7 +15,7 @@ import java.util.List;
 public class AddCommand {
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
 
-    public static void addCommand(Player sender, String argument) {
+    public static void addCommand(Player sender, String argument) throws IOException {
 
         // Is the player trying to add themselves to their own claim?
         if (sender.getName().equalsIgnoreCase(argument)) {
@@ -52,7 +52,7 @@ public class AddCommand {
             try {
                 playerData.save(data);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new IOException(e);
             }
             sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + target.getName() + " has been added to your global trust list.</blue>"));
             target.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + sender.getName() + " has added you to their global trust list.</blue>"));
@@ -75,7 +75,7 @@ public class AddCommand {
             try {
                 playerData.save(data);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new IOException(e);
             }
             sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + target.getName() + " has been added to your trusted list.</blue>"));
             target.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + sender.getName() + " has added you to their trusted list.</blue>"));
@@ -106,7 +106,7 @@ public class AddCommand {
         }
 
         if (claim.getOwnerID() == sender.getUniqueId()) { return true; }
-        if (claim.getOwnerName() == sender.getName()) { return true; }
+        if (claim.getOwnerName().equals(sender.getName())) { return true; }
         if (claim.getPermission(sender.getUniqueId().toString()) == ClaimPermission.Build
         || claim.getPermission(sender.getUniqueId().toString()) == ClaimPermission.Inventory) return true;
 
