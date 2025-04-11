@@ -1,6 +1,6 @@
-package com.github.orelii.shopshare.Commands;
+package com.github.orelii.chestshopextras.Commands;
 
-import com.github.orelii.shopshare.ShopsharePlayer;
+import com.github.orelii.chestshopextras.ShopsharePlayer;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import net.kyori.adventure.text.minimessage.MiniMessage;

@@ -1,4 +1,4 @@
-package com.github.orelii.shopshare;
+package com.github.orelii.chestshopextras;
 
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
@@ -20,7 +20,7 @@ public class ShopsharePlayer{
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     DataStore ds = GriefPrevention.instance.dataStore;
-    Shopshare plugin = Shopshare.getPlugin(Shopshare.class);
+    ChestShopExtras plugin = ChestShopExtras.getPlugin(ChestShopExtras.class);
     String _Name = "";
     String _UUID = "";
     Location _Location;

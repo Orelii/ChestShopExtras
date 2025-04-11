@@ -1,6 +1,6 @@
-package com.github.orelii.shopshare.Commands;
+package com.github.orelii.chestshopextras.Commands;
 
-import com.github.orelii.shopshare.ShopsharePlayer;
+import com.github.orelii.chestshopextras.ShopsharePlayer;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

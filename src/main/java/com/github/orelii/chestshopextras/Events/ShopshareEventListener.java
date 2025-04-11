@@ -1,10 +1,10 @@
-package com.github.orelii.shopshare.Events;
+package com.github.orelii.chestshopextras.Events;
 
 import com.Acrobot.ChestShop.Events.*;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
 import com.Acrobot.ChestShop.Utils.uBlock;
-import com.github.orelii.shopshare.Shopshare;
-import com.github.orelii.shopshare.ShopsharePlayer;
+import com.github.orelii.chestshopextras.ChestShopExtras;
+import com.github.orelii.chestshopextras.ShopsharePlayer;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class EventListener implements Listener {
+public class ShopshareEventListener implements Listener {
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     @EventHandler
@@ -49,7 +49,7 @@ public class EventListener implements Listener {
             }
         }
 
-        File data = new File(Shopshare.getPlugin(Shopshare.class).getDataFolder(), File.separator + "shops.yml");
+        File data = new File(ChestShopExtras.getPlugin(ChestShopExtras.class).getDataFolder(), File.separator + "shops.yml");
         FileConfiguration shops = YamlConfiguration.loadConfiguration(data);
         String ownerUUID = (String) shops.get(chest.getLocation().toString());
 
@@ -79,7 +79,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void CreateShopEvent(ShopCreatedEvent e) throws IOException {
-        File data = new File(Shopshare.getPlugin(Shopshare.class).getDataFolder(), File.separator + "shops.yml");
+        File data = new File(ChestShopExtras.getPlugin(ChestShopExtras.class).getDataFolder(), File.separator + "shops.yml");
         FileConfiguration shops = YamlConfiguration.loadConfiguration(data);
 
         shops.set(e.getContainer().getLocation().toString(), e.getPlayer().getUniqueId().toString());
@@ -94,7 +94,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void DeleteShopEvent(ShopDestroyedEvent e) throws IOException {
-        File data = new File(Shopshare.getPlugin(Shopshare.class).getDataFolder(), File.separator + "shops.yml");
+        File data = new File(ChestShopExtras.getPlugin(ChestShopExtras.class).getDataFolder(), File.separator + "shops.yml");
         FileConfiguration shops = YamlConfiguration.loadConfiguration(data);
 
         shops.set(e.getContainer().getLocation().toString(), null);

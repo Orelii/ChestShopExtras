@@ -1,4 +1,4 @@
-package com.github.orelii.shopshare.Commands;
+package com.github.orelii.chestshopextras.Commands;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;

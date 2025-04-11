@@ -1,4 +1,4 @@
-package com.github.orelii.shopshare.Commands;
+package com.github.orelii.chestshopextras.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
