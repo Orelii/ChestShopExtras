@@ -1,4 +1,4 @@
-package com.github.orelii.chestshopextras.Commands;
+package com.github.orelii.chestshopextras.Commands.Shopshare;
 
 import com.github.orelii.chestshopextras.ShopsharePlayer;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -17,13 +17,13 @@ public class RemoveCommand {
     public static void removeCommand(MiniMessage miniMessage, Player sender, String argument) throws IOException {
 
         if (sender.getName().equalsIgnoreCase(argument)) {
-            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>You can't remove yourself!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[CSE]</aqua> <red>You can't remove yourself!</red>"));
             return;
         }
 
         ShopsharePlayer player = new ShopsharePlayer(sender.getName(), sender.getUniqueId().toString(), sender.getLocation());
         if (player.getFile() == null) {
-            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player is not trusted!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[CSE]</aqua> <red>That player is not trusted!</red>"));
             return;
         }
 
@@ -49,7 +49,7 @@ public class RemoveCommand {
             // OfflinePlayers will always return a value even if no account associated exists.
             // Thus, we need to check if the name is empty instead of checking if offlinePlayer is null.
             if (name == null || name.isEmpty()) {
-                sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player does not exist!</red>"));
+                sender.sendMessage(miniMessage.deserialize("<aqua>[CSE]</aqua> <red>That player does not exist!</red>"));
                 return;
             }
         } else {
@@ -66,7 +66,7 @@ public class RemoveCommand {
                 playerData.set(player.getClaimAtLocation().getID().toString() + ".list", trusted);
             }
         } else {
-            sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <red>That player is not trusted!</red>"));
+            sender.sendMessage(miniMessage.deserialize("<aqua>[CSE]</aqua> <red>That player is not trusted!</red>"));
             return;
         }
 
@@ -77,6 +77,6 @@ public class RemoveCommand {
             throw new IOException(e);
         }
 
-        sender.sendMessage(miniMessage.deserialize("<aqua>[Shopshare]</aqua> <blue>" + name + " has been removed from your" + (global ? " global" : "") + " trust list.</blue>"));
+        sender.sendMessage(miniMessage.deserialize("<aqua>[CSE]</aqua> <blue>" + name + " has been removed from your" + (global ? " global" : "") + " trust list.</blue>"));
     }
 }

@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class ShopshareEventListener implements Listener {
+public class ShopshareEvents implements Listener {
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     @EventHandler

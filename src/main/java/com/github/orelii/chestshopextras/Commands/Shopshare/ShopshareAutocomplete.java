@@ -1,4 +1,4 @@
-package com.github.orelii.chestshopextras.Commands;
+package com.github.orelii.chestshopextras.Commands.Shopshare;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabAutocomplete implements TabCompleter {
+public class ShopshareAutocomplete implements TabCompleter {
     @Override
     public List<String> onTabComplete (CommandSender sender, Command cmd, String label, String[] args){
         List<String> l = new ArrayList<>();
@@ -22,14 +22,13 @@ public class TabAutocomplete implements TabCompleter {
                     }
                     return l;
                 }
-                else if (args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("help")){
+                else if (args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("help")){
                     return l;
                 }
                 l.add("add");
                 l.add("remove");
                 l.add("list");
                 l.add("help");
-                l.add("version");
                 return l;
             }
         }

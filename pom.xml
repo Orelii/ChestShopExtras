@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.orelii</groupId>
-    <artifactId>shopshare</artifactId>
+    <artifactId>ChestShopExtras</artifactId>
     <version>1.0.3</version>
     <packaging>jar</packaging>
 
-    <name>shopshare</name>
+    <name>ChestShop Extras</name>
 
     <properties>
         <java.version>21</java.version>

@@ -11,3 +11,6 @@ commands:
   shopshare:
     description: "Main command to manage shopshare access"
     usage: "/shopshare [add/remove/list/help]"
+  discount:
+    description: "Main command to manage shop discounts"
+    usage: "/discount [add/remove/list/help"
