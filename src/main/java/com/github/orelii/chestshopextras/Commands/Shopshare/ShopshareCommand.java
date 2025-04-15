@@ -64,12 +64,6 @@ public class ShopshareCommand implements CommandExecutor {
             sender.sendMessage(miniMessage.deserialize("<dark_aqua>========</dark_aqua><aqua>ChestShop Extras</aqua><dark_aqua>========</dark_aqua>"));
         }
 
-        // /shopshare version command
-      //  else if (args[0].equalsIgnoreCase("version")||args[0].equalsIgnoreCase("v")) {
-       //     sender.sendMessage(miniMessage.deserialize("<dark_aqua>Shopshare version 1.0.3 - By Oreli</dark_aqua>"));
-        //    sender.sendMessage(miniMessage.deserialize("<dark_aqua>https://github.com/Orelii/Shopshare</dark_aqua>"));
-        //}
-
         else {
             sender.sendMessage(miniMessage.deserialize("<aqua>[CSE]</aqua> <red>Unknown command!</red>"));
             return true;

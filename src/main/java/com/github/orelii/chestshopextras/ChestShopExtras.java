@@ -4,6 +4,7 @@ import com.github.orelii.chestshopextras.Commands.Discount.DiscountAutocomplete;
 import com.github.orelii.chestshopextras.Commands.Discount.DiscountCommand;
 import com.github.orelii.chestshopextras.Commands.Shopshare.ShopshareCommand;
 import com.github.orelii.chestshopextras.Commands.Shopshare.ShopshareAutocomplete;
+import com.github.orelii.chestshopextras.Commands.VersionCommand;
 import com.github.orelii.chestshopextras.Events.DiscountEvents;
 import com.github.orelii.chestshopextras.Events.ShopshareEvents;
 import org.bukkit.Bukkit;
@@ -17,6 +18,8 @@ public final class ChestShopExtras extends JavaPlugin {
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new ShopshareEvents(), this);
         Bukkit.getPluginManager().registerEvents(new DiscountEvents(), this);
+
+        getCommand("version").setExecutor(new VersionCommand());
 
         getCommand("shopshare").setExecutor(new ShopshareCommand());
         getCommand("shopshare").setTabCompleter(new ShopshareAutocomplete());

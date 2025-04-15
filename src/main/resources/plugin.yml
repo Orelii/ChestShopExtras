@@ -8,6 +8,10 @@ website: https://github.com/Orelii
 depend: [ ChestShop, GriefPrevention ]
 
 commands:
+  version:
+    description: "Displays plugin version"
+    usage: "/version"
+    aliases: [v]
   shopshare:
     description: "Main command to manage shopshare access"
     usage: "/shopshare [add/remove/list/help]"
