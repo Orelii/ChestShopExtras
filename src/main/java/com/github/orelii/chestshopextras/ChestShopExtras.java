@@ -1,5 +1,6 @@
 package com.github.orelii.chestshopextras;
 
+import com.github.orelii.chestshopextras.Commands.Discount.DiscountAutocomplete;
 import com.github.orelii.chestshopextras.Commands.Discount.DiscountCommand;
 import com.github.orelii.chestshopextras.Commands.Shopshare.ShopshareCommand;
 import com.github.orelii.chestshopextras.Commands.Shopshare.ShopshareAutocomplete;
@@ -21,6 +22,7 @@ public final class ChestShopExtras extends JavaPlugin {
         getCommand("shopshare").setTabCompleter(new ShopshareAutocomplete());
 
         getCommand("discount").setExecutor(new DiscountCommand());
+        getCommand("discount").setTabCompleter(new DiscountAutocomplete());
 
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
