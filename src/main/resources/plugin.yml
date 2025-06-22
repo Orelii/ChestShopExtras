@@ -6,6 +6,9 @@ authors: [ Oreli ]
 description: Adds useful features to the ChestShop plugin
 website: https://github.com/Orelii
 depend: [ ChestShop, GriefPrevention ]
+softdepend:
+  - GriefPrevention
+  - HuskClaims
 
 commands:
   version:
