@@ -8,9 +8,12 @@ import com.github.orelii.chestshopextras.ShopsharePlayer;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
+import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -21,6 +24,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopshareEvents implements Listener {
@@ -51,12 +55,27 @@ public class ShopshareEvents implements Listener {
 
         File data = new File(ChestShopExtras.getPlugin(ChestShopExtras.class).getDataFolder(), File.separator + "shops.yml");
         FileConfiguration shops = YamlConfiguration.loadConfiguration(data);
-        String ownerUUID = (String) shops.get(chest.getLocation().toString());
+
+        // Find the sign attached to this chest (if present) and prefer sign-location as key.
+        Sign attachedSign = findAttachedSign(block);
+        String ownerUUID = null;
+        if (attachedSign != null) {
+            ownerUUID = shops.getString(locationKey(attachedSign.getLocation()));
+        }
+
+        // Fallback: older versions used container location as key. Keep backward compatibility.
+        if (ownerUUID == null) {
+            ownerUUID = shops.getString(locationKey(chest.getLocation()));
+        }
 
         if (ownerUUID == null) return;
         if (ownerUUID.isEmpty()) return;
 
-        ShopsharePlayer owner = new ShopsharePlayer(ownerUUID, chest.getLocation());
+        Location ownerSignLoc = null;
+        if (attachedSign != null) ownerSignLoc = attachedSign.getLocation();
+        else ownerSignLoc = chest.getLocation();
+
+        ShopsharePlayer owner = new ShopsharePlayer(ownerUUID, ownerSignLoc);
         List<String> trusted = owner.getLocalTrustList();
         List<String> globalTrusted = owner.getGlobalTrustList();
 
@@ -82,7 +101,14 @@ public class ShopshareEvents implements Listener {
         File data = new File(ChestShopExtras.getPlugin(ChestShopExtras.class).getDataFolder(), File.separator + "shops.yml");
         FileConfiguration shops = YamlConfiguration.loadConfiguration(data);
 
-        shops.set(e.getContainer().getLocation().toString(), e.getPlayer().getUniqueId().toString());
+        // Prefer sign location as canonical storage key. Fall back to container if sign is missing.
+        Location keyLoc = null;
+        if (e.getSign() != null) keyLoc = e.getSign().getLocation();
+        else if (e.getContainer() != null) keyLoc = e.getContainer().getLocation();
+
+        if (keyLoc != null) {
+            shops.set(locationKey(keyLoc), e.getPlayer().getUniqueId().toString());
+        }
 
         try {
             shops.save(data);
@@ -97,7 +123,27 @@ public class ShopshareEvents implements Listener {
         File data = new File(ChestShopExtras.getPlugin(ChestShopExtras.class).getDataFolder(), File.separator + "shops.yml");
         FileConfiguration shops = YamlConfiguration.loadConfiguration(data);
 
-        shops.set(e.getContainer().getLocation().toString(), null);
+        // Prefer sign location, but gracefully handle null container (physics clears container before event on some breaks).
+        Location keyLoc = null;
+        if (e.getSign() != null) keyLoc = e.getSign().getLocation();
+        else if (e.getContainer() != null) keyLoc = e.getContainer().getLocation();
+
+        if (keyLoc != null) {
+            shops.set(locationKey(keyLoc), null);
+        }
+
+        // Cleanup: remove any empty configuration sections / leftover empty maps caused by prior serialization.
+        // Collect keys first to avoid concurrent modification.
+        List<String> keys = new ArrayList<>(shops.getKeys(true));
+        for (String k : keys) {
+            if (shops.isConfigurationSection(k)) {
+                if (shops.getConfigurationSection(k).getKeys(false).isEmpty()) shops.set(k, null);
+            } else {
+                Object val = shops.get(k);
+                if (val == null) shops.set(k, null);
+                if (val instanceof String && ((String) val).isEmpty()) shops.set(k, null);
+            }
+        }
 
         try {
             shops.save(data);
@@ -129,5 +175,38 @@ public class ShopshareEvents implements Listener {
             e.getClient().sendMessage(miniMessage.deserialize("<red>You cannot buy or sell from a shop you have access to!</red>"));
             e.setCancelled(true);
         }
+    }
+
+    // Helper: produce a stable, YAML-safe key for location lookups.
+    private String locationKey(Location loc) {
+        if (loc == null) return null;
+        return loc.getWorld().getName() + ";" + loc.getBlockX() + ";" + loc.getBlockY() + ";" + loc.getBlockZ() + ";" + (int) loc.getPitch() + ";" + (int) loc.getYaw();
+    }
+
+    // Helper: try to find a sign attached to the chest. This is deliberately permissive to cover wall signs and signs above.
+    private Sign findAttachedSign(Block chest) {
+        Block[] relatives = new Block[] {
+                chest.getRelative(BlockFace.UP),
+                chest.getRelative(BlockFace.NORTH),
+                chest.getRelative(BlockFace.SOUTH),
+                chest.getRelative(BlockFace.EAST),
+                chest.getRelative(BlockFace.WEST)
+        };
+
+        for (Block b : relatives) {
+            if (b.getState() instanceof Sign) return (Sign) b.getState();
+        }
+
+        // If nothing found, try a slightly wider scan (one block radius) to catch some odd placements.
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    Block b = chest.getWorld().getBlockAt(chest.getX() + dx, chest.getY() + dy, chest.getZ() + dz);
+                    if (b.getState() instanceof Sign) return (Sign) b.getState();
+                }
+            }
+        }
+
+        return null;
     }
 }
