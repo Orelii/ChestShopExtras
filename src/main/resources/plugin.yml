@@ -1,5 +1,5 @@
 name: ChestShopExtras
-version: '1.1.0'
+version: '1.1.1'
 main: com.github.orelii.chestshopextras.ChestShopExtras
 api-version: '1.21'
 authors: [ Oreli ]
